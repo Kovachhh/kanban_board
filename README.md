@@ -1,1 +1,1 @@
-Kanban board based on fullstack framework NextJS
+Kanban board based on fullstack framework NextJS.

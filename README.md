@@ -1,6 +1,6 @@
 Kanban board based on fullstack framework NextJS
 
-![Preview](./preview.png)
+![Preview](./preview_board.png)
 
 Instructions to launch the project:
 

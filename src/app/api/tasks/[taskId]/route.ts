@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/utils/prisma";
 
 export async function PUT(
-  req: NextRequest,
+  req: Request,
   { params }: { params: { taskId: string } }
 ) {
   const body = await req.json();

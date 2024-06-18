@@ -1,12 +1,10 @@
-import type { NextApiRequest, NextApiResponse } from "next";
 import { NextResponse } from "next/server";
 
 import { prisma } from "@/utils/prisma";
 
 export async function GET(
-  req: NextApiRequest,
+  req: Request,
   { params }: { params: { boardId: string } },
-  res: NextApiResponse
 ) {
   const { boardId } = params;
 

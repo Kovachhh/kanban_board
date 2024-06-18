@@ -16,6 +16,8 @@ import Loader from "./ui/Loader";
 import EditBoardModal from "./EditBoardModal";
 import DeleteBoardModal from "./DeleteBoardModal";
 import CreateBoardModal from "./CreateBoardModal";
+import { isStatusOk } from "@/app/helpers/checkApiStatus";
+import EmptyState from "./ui/EmptyState";
 
 interface BoardProps {
   boardId: string | null;
@@ -40,28 +42,16 @@ const Board: React.FC<BoardProps> = ({
 
   const columns = board?.columns || [];
 
-  const openCreatingModal = () => {
-    setIsCreating(true);
+  const toggleCreatingModal = (status: boolean) => {
+    setIsCreating(status);
   };
 
-  const closeCreatingModal = () => {
-    setIsCreating(false);
+  const toggleEditingModal = (status: boolean) => {
+    setIsEditing(status);
   };
 
-  const openEditingModal = () => {
-    setIsEditing(true);
-  };
-
-  const closeEditingModal = () => {
-    setIsEditing(false);
-  };
-
-  const openDeletingModal = () => {
-    setIsRemoving(true);
-  };
-
-  const closeDeletingModal = () => {
-    setIsRemoving(false);
+  const toggleDeletingModal = (status: boolean) => {
+    setIsRemoving(status);
   };
 
   const getBoard = async () => {
@@ -105,7 +95,7 @@ const Board: React.FC<BoardProps> = ({
         }
       );
 
-      if (response.status === 200) {
+      if (isStatusOk(response.status)) {
         setBoard((prevBoard) => {
           if (!prevBoard) return prevBoard;
 
@@ -140,7 +130,7 @@ const Board: React.FC<BoardProps> = ({
         `/api/columns/${columnId}/tasks/${taskId}`
       );
 
-      if (response.status === 200) {
+      if (isStatusOk(response.status)) {
         setBoard((prevBoard) => {
           if (!prevBoard) return prevBoard;
 
@@ -301,9 +291,7 @@ const Board: React.FC<BoardProps> = ({
 
   if (!boardId) {
     return (
-      <>
-      <Loader text="Select and load a board"/>
-      </>
+      <EmptyState text="Select and load a board"/>
     );
   }
 
@@ -313,20 +301,20 @@ const Board: React.FC<BoardProps> = ({
         {boardName}
         <span
           className="text-xs text-gray-400 mt-1 cursor-pointer"
-          onClick={() => openCreatingModal()}
+          onClick={() => toggleCreatingModal(true)}
         >
           <AiOutlinePlusCircle size={28} />
         </span>
         <span
           className="text-xs text-gray-400 mt-1 cursor-pointer"
-          onClick={() => openEditingModal()}
+          onClick={() => toggleEditingModal(true)}
         >
           <AiOutlineEdit size={28} />
         </span>
 
         <span
           className="text-xs text-gray-400 mt-1 cursor-pointer"
-          onClick={() => openDeletingModal()}
+          onClick={() => toggleDeletingModal(true)}
         >
           <AiOutlineDelete size={28} />
         </span>
@@ -350,14 +338,14 @@ const Board: React.FC<BoardProps> = ({
 
       {isCreating && (
         <CreateBoardModal
-          onClose={closeCreatingModal}
+          onClose={toggleCreatingModal}
           title="Create a board"
           action={createBoard}
         />
       )}
       {isEditing && (
         <EditBoardModal
-          onClose={closeEditingModal}
+          onClose={toggleEditingModal}
           title={`Edit the ${board.name} board`}
           action={editBoard}
           board={board!}
@@ -366,7 +354,7 @@ const Board: React.FC<BoardProps> = ({
 
       {isRemoving && (
         <DeleteBoardModal
-          onClose={closeDeletingModal}
+          onClose={toggleDeletingModal}
           title={`Are you sure you want to delete the ${board?.name} board?`}
           action={deleteBoard}
           board={board!}

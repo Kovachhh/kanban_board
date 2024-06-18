@@ -4,6 +4,7 @@ import { ChangeEvent, useState } from "react";
 import Input from "./ui/Input";
 import Button from "./ui/Button";
 import { TaskType } from "@/types/types";
+import { MESSAGES } from "@/const/messages";
 
 const EditTaskModal = ({
   title,
@@ -13,7 +14,7 @@ const EditTaskModal = ({
   columnId,
 }: {
   title: string;
-  onClose: () => void;
+  onClose: (status: boolean, task: TaskType | null) => void;
   action: (
     columnId: string,
     taskId: string,
@@ -36,15 +37,15 @@ const EditTaskModal = ({
   };
 
   const submitHandler = () => {
-    toast.success("Task is updated successfully");
+    toast.success(MESSAGES.TASK_UPDATED);
 
-    onClose();
+    onClose(false, null);
   };
 
   return (
     <div
       className="fixed top-0 left-0 flex justify-center items-center w-full h-full bg-gray-800 bg-opacity-50"
-      onClick={onClose}
+      onClick={() => onClose(false, null)}
     >
       <div
         className="bg-gray-700 rounded-lg p-6 text-white"
@@ -76,7 +77,7 @@ const EditTaskModal = ({
             />
 
             <div className="mt-5 flex justify-end gap-5">
-              <Button text="Cancel" onClick={onClose} />
+              <Button text="Cancel" onClick={() => onClose(false, null)} />
               <Button confirmButton text="Confirm" type="submit" />
             </div>
           </form>

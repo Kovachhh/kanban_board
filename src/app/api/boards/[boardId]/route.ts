@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 
 import { prisma } from "@/utils/prisma";
+import { VALIDATION } from "@/const/validation";
 
 export async function GET(
   req: Request,
@@ -25,7 +26,7 @@ export async function GET(
 
   if (!board) {
     return NextResponse.json(
-      { message: "Board is not found" },
+      { message: VALIDATION.BOARD_NOT_FOUND },
       { status: 404 }
     );
   }
@@ -42,7 +43,7 @@ export async function PUT(
   const { name } = data;
 
   if (!name.trim()) {
-    return NextResponse.json({ message: "Name is required" }, { status: 422 });
+    return NextResponse.json({ message: VALIDATION.NAME_REQUIRED }, { status: 422 });
   }
 
   const boardExist = await prisma.board.findFirst({
@@ -52,7 +53,7 @@ export async function PUT(
   });
 
   if (!boardExist) {
-    return NextResponse.json({ message: "Board not found" }, { status: 404 });
+    return NextResponse.json({ message: VALIDATION.BOARD_NOT_FOUND }, { status: 404 });
   }
 
   const updatedBoard = await prisma.board.update({
@@ -80,8 +81,14 @@ export async function DELETE(
   });
 
   if (!boardExist) {
-    return NextResponse.json({ message: "Board not found" }, { status: 404 });
+    return NextResponse.json({ message: VALIDATION.BOARD_NOT_FOUND }, { status: 404 });
   }
+
+  await prisma.column.deleteMany({
+    where: {
+      boardId
+    }
+  })
 
   await prisma.board.delete({
     where: {

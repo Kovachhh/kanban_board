@@ -1,3 +1,4 @@
+import { VALIDATION } from "@/const/validation";
 import { prisma } from "@/utils/prisma";
 import { NextResponse } from "next/server";
 
@@ -10,7 +11,7 @@ export async function POST(
   const { name, description } = data;
 
   if (!name.trim()) {
-    return NextResponse.json({ message: "Name is required" }, { status: 422 });
+    return NextResponse.json({ message: VALIDATION.NAME_REQUIRED }, { status: 422 });
   }
 
   const lastTask = await prisma.task.findFirst({

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 
 import { prisma } from "@/utils/prisma";
+import { VALIDATION } from "@/const/validation";
 
 export async function GET() {
   const boards = await prisma.board.findMany();
@@ -8,15 +9,15 @@ export async function GET() {
   return NextResponse.json({ data: boards });
 }
 
-export async function POST(
-  req: Request,
-  res: NextResponse
-) {
+export async function POST(req: Request, res: NextResponse) {
   const data = await req.json();
   const { name } = data;
 
   if (!name.trim()) {
-    return NextResponse.json({ message: "Name is required" }, { status: 422 });
+    return NextResponse.json(
+      { message: VALIDATION.NAME_REQUIRED },
+      { status: 422 }
+    );
   }
 
   const newBoard = await prisma.board.create({
@@ -25,22 +26,16 @@ export async function POST(
     },
   });
 
+  const defaultColumns = ["To do", "In progress", "Done"];
+
   await prisma.column.createMany({
     data: [
-      {
-        name: "To do",
-        boardId: newBoard.id
-      },
-      {
-        name: "In progress",
-        boardId: newBoard.id
-      },
-      {
-        name: "Done",
-        boardId: newBoard.id
-      }
-    ]
-  })
+      ...defaultColumns.map((column) => ({
+        name: column,
+        boardId: newBoard.id,
+      })),
+    ],
+  });
 
   const board = await prisma.board.findFirst({
     where: {
@@ -50,7 +45,6 @@ export async function POST(
       columns: true,
     },
   });
-
 
   return NextResponse.json({ data: board });
 }

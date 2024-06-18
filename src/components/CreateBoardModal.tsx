@@ -3,6 +3,7 @@ import toast from "react-hot-toast";
 
 import Input from "./ui/Input";
 import Button from "./ui/Button";
+import { MESSAGES } from "@/const/messages";
 
 const CreateBoardModal = ({
   title,
@@ -10,7 +11,7 @@ const CreateBoardModal = ({
   action,
 }: {
   title: string;
-  onClose: () => void;
+  onClose: (status: boolean) => void;
   action: (data: { name: string }) => void;
 }) => {
   const [name, setName] = useState<string>("");
@@ -20,15 +21,15 @@ const CreateBoardModal = ({
   };
 
   const submitHandler = () => {
-    toast.success("New board is created successfully");
+    toast.success(MESSAGES.BOARD_CREATED);
 
-    onClose();
+    onClose(false);
   };
 
   return (
     <div
       className="fixed top-0 left-0 flex justify-center items-center w-full h-full bg-gray-800 bg-opacity-50"
-      onClick={onClose}
+      onClick={() => onClose(false)}
     >
       <div
         className="bg-gray-700 rounded-lg p-6 text-white"
@@ -48,7 +49,7 @@ const CreateBoardModal = ({
             />
 
             <div className="mt-5 flex justify-end gap-5">
-              <Button text="Cancel" onClick={onClose} />
+              <Button text="Cancel" onClick={() => onClose(false)} />
               <Button confirmButton text="Confirm" type="submit" />
             </div>
           </form>

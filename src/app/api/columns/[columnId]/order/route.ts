@@ -1,3 +1,4 @@
+import { VALIDATION } from "@/const/validation";
 import { prisma } from "@/utils/prisma";
 import { NextResponse } from "next/server";
 
@@ -23,7 +24,7 @@ export async function PUT(
   });
 
   if (!columnExist) {
-    return NextResponse.json({ message: "Column not found" }, { status: 404 });
+    return NextResponse.json({ message: VALIDATION.COLUMN_NOT_FOUND }, { status: 404 });
   }
 
   const updatePromises = task_ids.map((taskId: string, index: number) => {

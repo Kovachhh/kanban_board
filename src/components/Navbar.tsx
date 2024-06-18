@@ -1,33 +1,32 @@
 "use client";
 
-import { ChangeEvent, useState } from "react";
+import { useState } from "react";
 
 import Button from "./ui/Button";
-import Select from "./ui/Select";
 import { BoardType } from "@/types/types";
+import BoardSelect from "./BoardSelect";
 
 type NavbarProps = {
-  value: string;
+  currentBoardId: string;
   updateParams: (boardId: string) => void;
   boards: BoardType[];
 };
 
-const Navbar: React.FC<NavbarProps> = ({ value, updateParams, boards }) => {
-  const [boardId, setBoardId] = useState(value);
+const Navbar: React.FC<NavbarProps> = ({ currentBoardId, updateParams, boards }) => {
+  const [selectedBoardId, setSelectedBoardId] = useState<string | null>(currentBoardId);
 
-  const handleBoardId = (event: ChangeEvent<HTMLSelectElement>) => {
-    setBoardId(event.target.value);
-  }
+  const handleBoardChange = (boardId: string | null) => {
+    setSelectedBoardId(boardId);
+  };
 
   return (
     <div className="bg-gray-900 py-10 relative flex items-center justify-center text-white gap-10 mx-auto w-[90%]">
-      <Select
-        name="Search"
-        value={boardId}
-        onChange={handleBoardId}
-        options={boards}
+      <BoardSelect
+        boards={boards}
+        selectedBoardId={selectedBoardId}
+        onChange={handleBoardChange}
       />
-      <Button onClick={() => updateParams(boardId)} text="Load" />
+      <Button onClick={() => updateParams(selectedBoardId!)} text="Load" />
     </div>
   );
 };

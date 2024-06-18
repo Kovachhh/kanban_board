@@ -23,6 +23,10 @@ const Home = () => {
     const currentParams = new URLSearchParams(window.location.search);
     currentParams.set("board", boardId);
 
+    if (!boardId) {
+        currentParams.delete("board");
+    }
+
     router.push(
       `${window.location.pathname}?${currentParams.toString()}`,
       undefined
@@ -85,7 +89,7 @@ const Home = () => {
 
     setBoards(updatedBoards);
 
-    updateSearchParams("null");
+    updateSearchParams("");
   };
 
   useEffect(() => {
@@ -96,7 +100,7 @@ const Home = () => {
     <>
       <Toaster />
       <Navbar
-        value={boardIdParam}
+        currentBoardId={boardIdParam}
         updateParams={updateSearchParams}
         boards={boards}
       />

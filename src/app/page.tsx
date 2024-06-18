@@ -2,11 +2,12 @@
 
 import { Suspense } from "react";
 import Home from "@/pages/Home";
+import Loader from "@/components/ui/Loader";
 
 const Main = () => {
 
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<Loader />}>
       <Home />
     </Suspense>
   );

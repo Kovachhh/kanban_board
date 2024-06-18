@@ -39,32 +39,18 @@ const Column: React.FC<ColumnProps> = ({
   const [isEditing, setIsEditing] = useState(false);
   const [isRemoving, setIsRemoving] = useState(false);
 
-  const openCreatingModal = () => {
-    setIsCreating(true);
+  const toggleCreatingModal = (status: boolean) => {
+    setIsCreating(status);
   };
 
-  const closeCreatingModal = () => {
-    setIsCreating(false);
-  };
-
-  const openEditingModal = (task: TaskType) => {
-    setIsEditing(true);
+  const toggleEditingModal = (status: boolean, task: TaskType | null) => {
+    setIsEditing(status);
     setCurrentTask(task);
   };
 
-  const closeEditingModal = () => {
-    setIsEditing(false);
-    setCurrentTask(null);
-  };
-
-  const openDeletingModal = (task: TaskType) => {
-    setIsRemoving(true);
+  const toggleDeletingModal = (status: boolean, task: TaskType | null) => {
+    setIsRemoving(status);
     setCurrentTask(task);
-  };
-
-  const closeDeletingModal = () => {
-    setIsRemoving(false);
-    setCurrentTask(null);
   };
 
   return (
@@ -103,13 +89,13 @@ const Column: React.FC<ColumnProps> = ({
                         <div className="flex gap-3">
                           <span
                             className="text-xs text-gray-400 mt-1 cursor-pointer"
-                            onClick={() => openEditingModal(task)}
+                            onClick={() => toggleEditingModal(true, task)}
                           >
                             <AiOutlineEdit size={16} />
                           </span>
                           <span
                             className="text-xs text-gray-400 mt-1 cursor-pointer"
-                            onClick={() => openDeletingModal(task)}
+                            onClick={() => toggleDeletingModal(true, task)}
                           >
                             <AiOutlineDelete size={16} />
                           </span>
@@ -125,7 +111,7 @@ const Column: React.FC<ColumnProps> = ({
             <div>
               <button
                 className="hover:bg-gray-700 rounded-lg text-white font-bold p-3"
-                onClick={openCreatingModal}
+                onClick={() => toggleCreatingModal(true)}
               >
                 + Add task
               </button>
@@ -135,7 +121,7 @@ const Column: React.FC<ColumnProps> = ({
       </Droppable>
       {isCreating && (
         <CreateTaskModal
-          onClose={closeCreatingModal}
+          onClose={toggleCreatingModal}
           title="Create a task"
           action={createTask}
           columnId={id}
@@ -143,7 +129,7 @@ const Column: React.FC<ColumnProps> = ({
       )}
       {isEditing && (
         <EditTaskModal
-          onClose={closeEditingModal}
+          onClose={toggleEditingModal}
           title={`Edit the ${currentTask!.name} task`}
           action={editTask}
           task={currentTask!}
@@ -153,7 +139,7 @@ const Column: React.FC<ColumnProps> = ({
 
       {isRemoving && (
         <DeleteTaskModal
-          onClose={closeDeletingModal}
+          onClose={toggleDeletingModal}
           title={`Are you sure you want to delete the ${currentTask?.name} task?`}
           action={deleteTask}
           task={currentTask!}

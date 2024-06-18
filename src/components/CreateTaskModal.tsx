@@ -3,6 +3,7 @@ import toast from "react-hot-toast";
 
 import Input from "./ui/Input";
 import Button from "./ui/Button";
+import { MESSAGES } from "@/const/messages";
 
 const CreateTaskModal = ({
   title,
@@ -11,7 +12,7 @@ const CreateTaskModal = ({
   columnId,
 }: {
   title: string;
-  onClose: () => void;
+  onClose: (status: boolean) => void;
   action: (
     boardId: string,
     data: { name: string; description: string }
@@ -30,15 +31,15 @@ const CreateTaskModal = ({
   };
 
   const submitHandler = () => {
-    toast.success("New task is created successfully");
+    toast.success(MESSAGES.TASK_CREATED);
 
-    onClose();
+    onClose(false);
   };
 
   return (
     <div
       className="fixed top-0 left-0 flex justify-center items-center w-full h-full bg-gray-800 bg-opacity-50"
-      onClick={onClose}
+      onClick={() => onClose(false)}
     >
       <div
         className="bg-gray-700 rounded-lg p-6 text-white"
@@ -69,7 +70,7 @@ const CreateTaskModal = ({
             />
 
             <div className="mt-5 flex justify-end gap-5">
-              <Button text="Cancel" onClick={onClose} />
+              <Button text="Cancel" onClick={() => onClose(false)} />
               <Button confirmButton text="Confirm" type="submit" />
             </div>
           </form>

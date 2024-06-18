@@ -1,3 +1,4 @@
+import { VALIDATION } from "@/const/validation";
 import { prisma } from "@/utils/prisma";
 import { NextResponse } from "next/server";
 
@@ -49,7 +50,7 @@ export async function DELETE(
   });
 
   if (!taskExist) {
-    return NextResponse.json({ message: "Task not found" }, { status: 404 });
+    return NextResponse.json({ message: VALIDATION.TASK_NOT_FOUND }, { status: 404 });
   }
 
   await prisma.task.delete({

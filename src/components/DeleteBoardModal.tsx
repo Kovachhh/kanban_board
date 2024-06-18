@@ -2,6 +2,7 @@ import toast from "react-hot-toast";
 
 import Button from "./ui/Button";
 import { BoardType } from "@/types/types";
+import { MESSAGES } from "@/const/messages";
 
 const DeleteBoardModal = ({
   title,
@@ -10,21 +11,21 @@ const DeleteBoardModal = ({
   board,
 }: {
   title: string;
-  onClose: () => void;
+  onClose: (status: boolean) => void;
   action: (boardId: string) => void;
   board: BoardType,
 }) => {
 
   const submitHandler = () => {
-    toast.success("Board is removed successfully");
+    toast.success(MESSAGES.BOARD_REMOVED);
 
-    onClose();
+    onClose(false);
   };
 
   return (
     <div
       className="fixed top-0 left-0 flex justify-center items-center w-full h-full bg-gray-800 bg-opacity-50"
-      onClick={onClose}
+      onClick={() => onClose(false)}
     >
       <div
         className="bg-gray-700 rounded-lg p-6 text-white"
@@ -35,7 +36,7 @@ const DeleteBoardModal = ({
           <form action={() => action(board.id)} onSubmit={submitHandler}>
 
             <div className="mt-5 flex justify-end gap-5">
-              <Button text="Cancel" onClick={onClose} />
+              <Button text="Cancel" onClick={() => onClose(false)} />
               <Button confirmButton text="Confirm" type="submit" />
             </div>
           </form>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
 
@@ -92,11 +92,11 @@ const Home = () => {
   }, [])
 
   return (
-    <>
+    <Suspense fallback={<div>Loading...</div>}>
       <Toaster />
       <Navbar value={boardIdParam} updateParams={updateSearchParams} boards={boards} />
       <Board boardId={boardIdParam} boardName={currentBoardName} createBoard={createBoard} editBoard={editBoard} deleteBoard={deleteBoard} />
-    </>
+    </Suspense>
   );
 };
 

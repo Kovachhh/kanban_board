@@ -12,7 +12,7 @@ import { BoardType } from "@/types/types";
 const Home = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const boardIdParam = searchParams.get("board") || "";
+  const boardIdParam = searchParams?.get("board") || "";
 
   const [boards, setBoards] = useState<BoardType[] | []>([]);
 

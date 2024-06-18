@@ -299,6 +299,14 @@ const Board: React.FC<BoardProps> = ({
     return <Loader />;
   }
 
+  if (!boardId) {
+    return (
+      <>
+      <Loader text="Select and load a board"/>
+      </>
+    );
+  }
+
   return (
     <div className="bg-gray-900 py-10 relative h-screen">
       <h1 className="font-bold text-center text-white mb-10 text-3xl flex gap-5 justify-center">
